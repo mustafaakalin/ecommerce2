@@ -1,1 +1,28 @@
-export class Brand {}
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+
+@Entity('brands')
+export class Brand {
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    slug: string;
+
+    @Column()
+    logo: string;
+
+    @Column({ type: 'text', nullable: true })
+    description: string;
+
+    @Column({ name: 'is_active', default: true })
+    isActive: boolean;
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: Date;
+}

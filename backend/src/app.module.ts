@@ -19,9 +19,10 @@ import { SettingsModule } from './settings/settings.module';
 import { SoldoutsModule } from './soldouts/soldouts.module';
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { UsersModule } from './users/users.module';
+import { OrderItemsModule } from './order_items/order_items.module';
 
 @Module({
-  imports: [AddressesModule, BrandsModule, CampaignsModule, CartsModule, CategoriesModule, CommentsModule, ContactsModule, CouponsModule, FaqsModule, LikesModule, OrdersModule, RatingsModule, ProductsModule, ShipmentsModule, SettingsModule, SoldoutsModule, TestimonialsModule, UsersModule],
+  imports: [AddressesModule, BrandsModule, CampaignsModule, CartsModule, CategoriesModule, CommentsModule, ContactsModule, CouponsModule, FaqsModule, LikesModule, OrdersModule, RatingsModule, ProductsModule, ShipmentsModule, SettingsModule, SoldoutsModule, TestimonialsModule, UsersModule, OrderItemsModule],
   controllers: [AppController],
   providers: [AppService],
 })

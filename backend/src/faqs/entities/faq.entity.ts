@@ -1,1 +1,19 @@
-export class Faq {}
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
+@Entity('faqs')
+export class Faq {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column('text')
+  question: string;
+
+  @Column('text')
+  answer: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+}

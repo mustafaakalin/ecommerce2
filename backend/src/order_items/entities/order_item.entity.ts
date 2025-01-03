@@ -1,18 +1,19 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { Column, CreateDateColumn, Entity, ManyToOne, JoinColumn , PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
+import { Order } from '../../orders/entities/order.entity';
 
-@Entity('carts')
-export class Cart {
+@Entity('order_items')
+export class OrderItem {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  user_id: number;
-  
-  @ManyToOne(() => User, user => user.id)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+  order_id: number;
+
+  @ManyToOne(() => Order, order => order.id)
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
+
 
   @Column()
   product_id: number;
