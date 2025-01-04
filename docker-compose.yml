@@ -32,7 +32,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydb
+      POSTGRES_DB: ecommerce2
     ports:
       - "5432:5432"
     volumes:
