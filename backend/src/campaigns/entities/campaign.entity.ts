@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, ManyToOne, JoinColumn } from 'typeorm';
+import { Product } from '../../products/entities/product.entity';
 
 export enum DiscountType {
   FIXED = 'fixed',
@@ -28,6 +29,24 @@ export class Campaign {
 
   @Column('decimal', { precision: 10, scale: 2 })
   discount_value: number;
+
+  @ManyToOne(() => Product)
+  @JoinColumn({ name: 'product_id' })
+  product: Product;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  validateDiscountValue() {
+    if (this.discount_type === DiscountType.PERCENTAGE) {
+      if (this.discount_value < 1 || this.discount_value > 100) {
+        throw new Error('Discount value must be between 1 and 100 for percentage discount type');
+      }
+    } else if (this.discount_type === DiscountType.FIXED) {
+      if (this.discount_value >= this.product.price) {
+        throw new Error('Discount value must be less than product price for fixed discount type');
+      }
+    }
+  }
 
   @Column()
   start_date: Date;

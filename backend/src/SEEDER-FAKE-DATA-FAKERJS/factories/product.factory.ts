@@ -1,10 +1,14 @@
 import { faker } from '@faker-js/faker';
 import { Product, DiscountType } from '../../products/entities/product.entity';
+import { DataSource } from 'typeorm';
+import { Category } from 'src/categories/entities/category.entity';
+import { Brand } from 'src/brands/entities/brand.entity';
+import { Campaign } from 'src/campaigns/entities/campaign.entity';
 
 class ProductFactory {
-    constructor(private dataSource: any, private categoryId: number, private brandId: number, private campaignId?: number) {}
+    constructor(private dataSource: DataSource) {}
   
-    create(): Partial<Product> {
+    async create(category: Category, brand: Brand, campaign: Campaign): Promise<Partial<Product>> {
       const name = faker.commerce.productName();
       const price = parseFloat(faker.commerce.price({ min: 10, max: 1000 }));
   
@@ -14,9 +18,9 @@ class ProductFactory {
         description: faker.commerce.productDescription(),
         price,
         stock: faker.number.int({ min: 0, max: 1000 }),
-        category_id: this.categoryId,
-        brand_id: this.brandId,
-        campaign_id: this.campaignId || null,
+        category_id: category.id,
+        brand_id: brand.id,
+        campaign_id: campaign.id || null,
         images: Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => faker.image.url()),
         tags: Array.from({ length: faker.number.int({ min: 2, max: 6 }) }, () => faker.commerce.productAdjective()),
         is_active: faker.datatype.boolean({ probability: 0.9 }),
@@ -44,10 +48,22 @@ class ProductFactory {
       };
     }
   
-    async createMany(count: number): Promise<Partial<Product>[]> {
+    async createMany(count: number, categories: Category[], brands: Brand[], campaigns: Campaign[]): Promise<Partial<Product>[]> {
       const products: Partial<Product>[] = [];
+      const usedCombinations = new Set<string>();
       for (let i = 0; i < count; i++) {
-        products.push(this.create());
+        let category, brand, campaign;
+        let combination;
+
+        do {
+          category = categories[i % categories.length];
+          brand = brands[i % brands.length];
+          campaign = campaigns[i % campaigns.length];
+          combination = `${category.id}-${brand.id}-${campaign.id}`;
+        } while (usedCombinations.has(combination));
+  
+        usedCombinations.add(combination);
+        products.push(await this.create(category, brand, campaign));
       }
       return products;
     }

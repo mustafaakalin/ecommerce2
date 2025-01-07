@@ -50,13 +50,6 @@ export class Shipment {
   id: number;
 
   @Column()
-  order_id: number;
-
-  @OneToOne(() => Order, order => order.id)
-  @JoinColumn({ name: 'order_id' })
-  order: Order;
-
-  @Column()
   tracking_number: string;
 
   @Column({

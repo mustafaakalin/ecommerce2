@@ -16,7 +16,7 @@ class CampaignFactory {
           faker.number.float({ min: 10, max: 1000, fractionDigits: 2 }) // For fixed amount
         ]),
         start_date: startDate,
-        end_date: faker.date.between({ from: startDate, to: faker.date.future({ years: 1 }) }),
+        end_date: faker.date.between({ from: startDate, to: faker.date.future({ years: 1, refDate: startDate }) }),
         is_active: faker.datatype.boolean({ probability: 0.8 })
       };
     }
