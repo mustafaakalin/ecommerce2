@@ -9,7 +9,6 @@ import { Campaign } from '../campaigns/entities/campaign.entity';
 import { Product } from '../products/entities/product.entity';
 import { Order } from '../orders/entities/order.entity';
 
-
 import { UserFactory } from './factories/user.factory';
 import { AddressFactory } from './factories/address.factory';
 import { CategoryFactory } from './factories/category.factory';
@@ -32,35 +31,64 @@ import { CouponFactory } from './factories/coupon.factory';
 export class DatabaseSeeder {
   constructor(private dataSource: DataSource) {}
 
+  // işlemleri paralel hale getirebilirsiniz:
   async run() {
     try {
-      // Seed in correct order - dependencies first
-      await this.seedUsers(20);
-      await this.seedAddresses(40);
-      await this.seedCategories(10);
-      await this.seedBrands(15);
-      await this.seedCampaigns(5);
-      await this.seedProducts(100);
-      await this.seedComments(50);
-      await this.seedRatings(100);
-      await this.seedLikes(80);
-      await this.seedCarts(30);
-      await this.seedShipments(25);
-      await this.seedOrders(25);
-      await this.seedOrderItems(25);
-      await this.seedSoldouts(25);
-      await this.seedSettings(1);
-      await this.seedFaqs(10);
-      await this.seedTestimonials(8);
-      await this.seedContacts(10);
-      await this.seedCoupons(10);
-      // ...other seeding
+      await Promise.all([
+        this.seedUsers(20),
+        this.seedAddresses(40),
+        this.seedCategories(10),
+        this.seedBrands(15),
+        this.seedCampaigns(5),
+        this.seedProducts(100),
+        this.seedComments(50),
+        this.seedRatings(100),
+        this.seedLikes(80),
+        this.seedCarts(30),
+        this.seedShipments(25),
+        this.seedOrders(25),
+        this.seedOrderItems(25),
+        this.seedSoldouts(25),
+        this.seedSettings(1),
+        this.seedFaqs(10),
+        this.seedTestimonials(8),
+        this.seedContacts(10),
+        this.seedCoupons(10),
+      ]);
     } catch (error) {
       console.error('Seeding failed:', error);
       throw error;
     }
   }
 
+  // async run() {
+  //   try {
+  //     // Seed in correct order - dependencies first
+  //     await this.seedUsers(20);
+  //     await this.seedAddresses(40);
+  //     await this.seedCategories(10);
+  //     await this.seedBrands(15);
+  //     await this.seedCampaigns(5);
+  //     await this.seedProducts(100);
+  //     await this.seedComments(50);
+  //     await this.seedRatings(100);
+  //     await this.seedLikes(80);
+  //     await this.seedCarts(30);
+  //     await this.seedShipments(25);
+  //     await this.seedOrders(25);
+  //     await this.seedOrderItems(25);
+  //     await this.seedSoldouts(25);
+  //     await this.seedSettings(1);
+  //     await this.seedFaqs(10);
+  //     await this.seedTestimonials(8);
+  //     await this.seedContacts(10);
+  //     await this.seedCoupons(10);
+  //     // ...other seeding
+  //   } catch (error) {
+  //     console.error('Seeding failed:', error);
+  //     throw error;
+  //   }
+  // }
 
   // private async functions for seeding
   private async seedUsers(count: number): Promise<void> {
@@ -99,8 +127,6 @@ export class DatabaseSeeder {
     }
   }
 
-
-
   private async seedCampaigns(count: number): Promise<void> {
     try {
       const campaignFactory = new CampaignFactory();
@@ -122,10 +148,19 @@ export class DatabaseSeeder {
       const categories = await categoryRepository.find();
       const brands = await brandRepository.find();
       const campaigns = await campaignRepository.find();
-      if (categories.length === 0 || brands.length === 0 || campaigns.length === 0) {
+      if (
+        categories.length === 0 ||
+        brands.length === 0 ||
+        campaigns.length === 0
+      ) {
         throw new Error('Categories, Brands, or Campaigns not found');
       }
-      const products = await productFactory.createMany(count,categories,brands,campaigns);
+      const products = await productFactory.createMany(
+        count,
+        categories,
+        brands,
+        campaigns,
+      );
       await this.dataSource.getRepository('Product').save(products);
       console.log(`✅ Created ${count} products`);
     } catch (error) {
@@ -133,7 +168,6 @@ export class DatabaseSeeder {
       throw new Error(`Failed to seed products: ${error.message}`);
     }
   }
-
 
   private async seedComments(count: number): Promise<void> {
     try {
@@ -167,7 +201,6 @@ export class DatabaseSeeder {
     }
   }
 
-
   private async seedLikes(count: number): Promise<void> {
     try {
       const likeFactory = new LikeFactory(this.dataSource);
@@ -183,7 +216,6 @@ export class DatabaseSeeder {
       throw new Error(`Failed to seed likes: ${error.message}`);
     }
   }
-
 
   private async seedCarts(count: number): Promise<void> {
     try {
@@ -201,7 +233,6 @@ export class DatabaseSeeder {
     }
   }
 
-
   private async seedShipments(count: number): Promise<void> {
     try {
       const shipmentFactory = new ShipmentFactory(this.dataSource);
@@ -214,23 +245,31 @@ export class DatabaseSeeder {
     }
   }
 
-
   private async seedOrders(count: number): Promise<void> {
     try {
       const userRepository = this.dataSource.getRepository(User);
       const shipmentRepository = this.dataSource.getRepository(Shipment);
       const addressRepository = this.dataSource.getRepository(Address);
-  
+
       const users = await userRepository.find();
       const shipments = await shipmentRepository.find();
       const addresses = await addressRepository.find();
-  
-      if (users.length === 0 || shipments.length === 0 || addresses.length === 0) {
+
+      if (
+        users.length === 0 ||
+        shipments.length === 0 ||
+        addresses.length === 0
+      ) {
         throw new Error('Users, Shipments, or Addresses not found');
       }
 
       const orderFactory = new OrderFactory(this.dataSource);
-      const orders = await orderFactory.createMany(count, users, shipments, addresses);
+      const orders = await orderFactory.createMany(
+        count,
+        users,
+        shipments,
+        addresses,
+      );
       await this.dataSource.getRepository('Order').save(orders);
       console.log(`✅ Created ${count} orders`);
     } catch (error) {
@@ -239,8 +278,6 @@ export class DatabaseSeeder {
     }
   }
 
-
-
   private async seedOrderItems(count: number): Promise<void> {
     try {
       const orderItemFactory = new OrderItemFactory(this.dataSource);
@@ -248,7 +285,11 @@ export class DatabaseSeeder {
       const productRepository = this.dataSource.getRepository(Product);
       const orders = await orderRepository.find();
       const products = await productRepository.find();
-      const orderItems = await orderItemFactory.createMany(count, orders, products);
+      const orderItems = await orderItemFactory.createMany(
+        count,
+        orders,
+        products,
+      );
       await this.dataSource.getRepository('OrderItem').save(orderItems);
       console.log(`✅ Created ${count} order items`);
     } catch (error) {
@@ -256,7 +297,6 @@ export class DatabaseSeeder {
       throw new Error(`Failed to seed order items: ${error.message}`);
     }
   }
-
 
   private async seedSettings(count: number): Promise<void> {
     try {
@@ -270,7 +310,6 @@ export class DatabaseSeeder {
     }
   }
 
-
   private async seedFaqs(count: number): Promise<void> {
     try {
       const faqFactory = new FaqFactory();
@@ -282,8 +321,6 @@ export class DatabaseSeeder {
       throw new Error(`Failed to seed faqs: ${error.message}`);
     }
   }
-
-
 
   private async seedTestimonials(count: number): Promise<void> {
     try {
@@ -297,8 +334,6 @@ export class DatabaseSeeder {
     }
   }
 
-
-
   private async seedContacts(count: number): Promise<void> {
     try {
       const contactFactory = new ContactFactory();
@@ -311,9 +346,6 @@ export class DatabaseSeeder {
     }
   }
 
-
-
-
   private async seedCoupons(count: number): Promise<void> {
     try {
       const couponFactory = new CouponFactory();
@@ -325,8 +357,6 @@ export class DatabaseSeeder {
       throw new Error(`Failed to seed coupons: ${error.message}`);
     }
   }
-
-
 
   private async seedAddresses(count: number): Promise<void> {
     try {
@@ -342,7 +372,6 @@ export class DatabaseSeeder {
     }
   }
 
-
   private async seedSoldouts(count: number): Promise<void> {
     try {
       const productRepository = this.dataSource.getRepository('Product');
@@ -355,6 +384,4 @@ export class DatabaseSeeder {
       throw new Error(`Failed to seed soldouts: ${error.message}`);
     }
   }
-
-
 }
