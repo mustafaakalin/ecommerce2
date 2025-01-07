@@ -1,6 +1,9 @@
-import { User } from 'src/users/entities/user.entity';
-import { Shipment } from 'src/shipments/entities/shipment.entity';
-import { Address } from 'src/addresses/entities/address.entity';
+// import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
+// import { Shipment } from 'src/shipments/entities/shipment.entity';
+import { Shipment } from '../../shipments/entities/shipment.entity';
+// import { Address } from 'src/addresses/entities/address.entity';
+import { Address } from '../../addresses/entities/address.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export enum OrderStatus {

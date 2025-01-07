@@ -47,7 +47,7 @@ import { User } from './users/entities/user.entity';
   imports: [AddressesModule, BrandsModule, CampaignsModule, CartsModule, CategoriesModule, CommentsModule, ContactsModule, CouponsModule, FaqsModule, LikesModule, OrdersModule, RatingsModule, ProductsModule, ShipmentsModule, SettingsModule, SoldoutsModule, TestimonialsModule, UsersModule, OrderItemsModule, 
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '../.env',
+      envFilePath: '.env',
     }),
     TypeOrmModule.forRootAsync({
       // postgresql
