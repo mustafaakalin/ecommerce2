@@ -25,6 +25,7 @@ export class DatabaseSeeder {
       await this.seedUsers(20);
       await this.seedCategories(10);
       await this.seedBrands(15);
+      await this.seedCampaigns(5);
       await this.seedProducts(100);
       await this.seedComments(50);
       await this.seedRatings(100);
@@ -35,7 +36,6 @@ export class DatabaseSeeder {
       await this.seedFaqs(10);
       await this.seedTestimonials(8);
       await this.seedContacts(10);
-      await this.seedCampaigns(5);
       // ...other seeding
     } catch (error) {
       console.error('Seeding failed:', error);

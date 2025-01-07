@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToOne, JoinColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Order } from 'src/orders/entities/order.entity';
+// import { Order } from 'src/orders/entities/order.entity';
+import { Order } from '../../orders/entities/order.entity';
 
 
 
