@@ -3,36 +3,33 @@ import { Soldout } from '../../soldouts/entities/soldout.entity';
 import { DataSource } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Product } from '../../products/entities/product.entity';
-import { Order } from 'src/orders/entities/order.entity';
-
-export const createSoldout = (
-    userId: number, 
-    productId: number, 
-    orderId: number
-): Partial<Soldout> => ({
-    user_id: userId,
-    product_id: productId,
-    order_id: orderId,
-    is_sold: faker.datatype.boolean({ probability: 0.8 }),
-    notes: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.6 })
-});
-
+import { Order } from '../../orders/entities/order.entity';
 
 class SoldoutFactory {
   constructor(private dataSource: DataSource) {}
 
-  async create(user: User, product: Product, order: Order): Promise<Partial<Soldout>> {
-
+  async create(
+    user: User,
+    product: Product,
+    order: Order,
+  ): Promise<Partial<Soldout>> {
     return {
       user_id: user.id,
       product_id: product.id,
       order_id: order.id,
       is_sold: faker.datatype.boolean({ probability: 0.8 }),
-      notes: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.6 })
+      notes: faker.helpers.maybe(() => faker.lorem.sentence(), {
+        probability: 0.6,
+      }),
     };
   }
 
-  async createMany(count: number, users: User[], products: Product[], orders: Order[]): Promise<Partial<Soldout>[]> {
+  async createMany(
+    count: number,
+    users: User[],
+    products: Product[],
+    orders: Order[],
+  ): Promise<Partial<Soldout>[]> {
     const soldouts: Partial<Soldout>[] = [];
     const usedCombinations = new Set<string>();
 
