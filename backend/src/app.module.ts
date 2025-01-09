@@ -41,7 +41,6 @@ import { Setting } from './settings/entities/setting.entity';
 import { Soldout } from './soldouts/entities/soldout.entity';
 import { Testimonial } from './testimonials/entities/testimonial.entity';
 import { User } from './users/entities/user.entity';
-import { GuestsModule } from './guests/guests.module';
 
 
 @Module({
@@ -66,7 +65,6 @@ import { GuestsModule } from './guests/guests.module';
       }),
       inject: [ConfigService],
     }),
-    GuestsModule
   ],
   
   controllers: [AppController],
