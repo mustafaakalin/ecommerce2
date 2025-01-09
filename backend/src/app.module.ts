@@ -41,6 +41,7 @@ import { Setting } from './settings/entities/setting.entity';
 import { Soldout } from './soldouts/entities/soldout.entity';
 import { Testimonial } from './testimonials/entities/testimonial.entity';
 import { User } from './users/entities/user.entity';
+import { GuestsModule } from './guests/guests.module';
 
 
 @Module({
@@ -64,7 +65,8 @@ import { User } from './users/entities/user.entity';
         synchronize: configService.get('NODE_ENV') === 'development',
       }),
       inject: [ConfigService],
-    })
+    }),
+    GuestsModule
   ],
   
   controllers: [AppController],
