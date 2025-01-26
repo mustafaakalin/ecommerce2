@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
+    // USER CREATE SERVICE
   }
 
   findAll() {

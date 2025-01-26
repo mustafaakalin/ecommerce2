@@ -3,12 +3,10 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
-  OTHER = 'other'
 }
 export enum Type {
-  MANAGER00000121 = 'manager00000121',
-  USER = 'user',
-  OTHER = 'other'
+  SELLER = 'seller',
+  USER = 'customer',
 }
 
 @Entity('users')
