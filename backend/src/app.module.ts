@@ -41,6 +41,7 @@ import { Setting } from './settings/entities/setting.entity';
 import { Soldout } from './soldouts/entities/soldout.entity';
 import { Testimonial } from './testimonials/entities/testimonial.entity';
 import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -65,6 +66,7 @@ import { User } from './users/entities/user.entity';
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
   ],
   
   controllers: [AppController],
